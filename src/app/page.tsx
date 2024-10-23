@@ -1,3 +1,4 @@
+
 'use client'
 import React, { useState, useEffect } from 'react';
 import Pagination from '@/components/pagination';
@@ -30,6 +31,7 @@ const Home: React.FC = () => {
                 setPageCount(Math.ceil(res.data.totalResults / 10))
             }
             } catch (error) {
+                console.log(error)
                 toast.error('Failed to fetch recipes. Please try again later.', {
                     position: "top-right",
                     autoClose: 3000,
@@ -49,7 +51,7 @@ const Home: React.FC = () => {
             fetchRecipes()
         }
     },[searchParams])
-    
+    console.log(searchParams)
     return (
 
         <div className="md:flex h-full">
