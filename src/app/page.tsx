@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Pagination from '@/components/pagination';
 
 import Filter from '@/components/filter';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useSearchParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { RecipeType } from '@/types';
@@ -31,16 +31,17 @@ const Home: React.FC = () => {
                 setPageCount(Math.ceil(res.data.totalResults / 10))
             }
             } catch (error) {
-                console.log(error)
-                toast.error('Failed to fetch recipes. Please try again later.', {
-                    position: "top-right",
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                });
+                if(axios.isAxiosError(error)){
+                    toast.error(error.message, {
+                        position: "top-right",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                    });
+                }
                 setRecipes(null)
             }
             
@@ -65,7 +66,7 @@ const Home: React.FC = () => {
                     <p className="text-center text-gray-600">No ingredients provided</p>
                 ) : isLoading ? (
                     <p className="text-center text-gray-600">Loading...</p>
-                ) : recipes && recipes.length > 0 ? (
+                ) : recipes ? (recipes.length > 0 ? (
                     <>
                         <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
                             {recipes.map((recipe: RecipeType) => (
@@ -74,11 +75,11 @@ const Home: React.FC = () => {
                         </div>
                         <Pagination pageCount={pageCount} />
                     </>
-                ) : recipes === null ? (
-                    <p className="text-center text-gray-600">There was an error fetching recipes. Please try again later.</p>
                 ) : (
                     <p className="text-center text-gray-600">No recipes found. Try a different search.</p>
-                )}
+                )): recipes === null ? (
+                    <p className="text-center text-gray-600">There was an error fetching recipes. Please try again later.</p>
+                ): ''}
                 
             </div>
         </div>

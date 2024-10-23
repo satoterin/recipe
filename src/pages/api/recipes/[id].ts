@@ -24,9 +24,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     );
  
-    res.status(200).json(response.data,);
+    res.status(200).json(response.data);
   } catch (error) {
-    console.log(error)
-    res.status(500).json({ message: 'Error fetching recipe information' });
+    if (axios.isAxiosError(error)) {
+      res.status(error.status || 500).json({ error: error.message || 'Failed to fetch recipes' });
+    } else {
+      res.status(500).json({ error: 'An unexpected error occurred' });
+    }
+    
   }
 }

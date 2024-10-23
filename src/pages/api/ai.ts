@@ -41,7 +41,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     res.status(200).json({ description: generatedDescription });
   } catch (error) {
-    console.error('Error generating product description:', error);
-    res.status(500).json({ message: 'Error generating product description' });
+    if (axios.isAxiosError(error)) {
+      console.log(error.message)
+      res.status(error.status || 500).json({ error: error.message || 'Error generating product description' });
+    } else {
+      res.status(500).json({ message: 'Error generating product description' });
+    }
+   
   }
 }

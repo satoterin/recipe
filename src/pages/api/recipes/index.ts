@@ -1,6 +1,6 @@
 // pages/api/fetchRecipes.ts
 import type { NextApiRequest, NextApiResponse } from 'next';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 type ExtraParams = {
   diet?: string;
   type?: string;
@@ -33,8 +33,13 @@ export async function handleGet(req: NextApiRequest, res: NextApiResponse) {
     });
     res.status(200).json(response.data);
   } catch (error) {
-    console.log(error)
-    res.status(500).json({ error: 'Failed to fetch recipes' });
+   
+    if (axios.isAxiosError(error)) {
+      console.log(error.message)
+      res.status(error.status || 500).json({ error: error.message || 'Failed to fetch recipes' });
+    } else {
+      res.status(500).json({ error: 'An unexpected error occurred' });
+    }
   }
 }
 
