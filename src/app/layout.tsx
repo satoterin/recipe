@@ -32,7 +32,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Suspense fallback={<div>Loading...</div>}>
-        <div className="h-screen w-screen relative">
+        <div className="h-screen w-screen relative text-gray-800">
           <main className="p-4 bg-gray-100 pt-20 pb-14 fixed top-0 left-0 right-0 bottom-0">
             <div className="h-full  overflow-y-auto">
             {children}
