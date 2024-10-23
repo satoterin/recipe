@@ -5,7 +5,7 @@ import Pagination from '@/components/pagination';
 import Filter from '@/components/filter';
 import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { RecipeType } from '@/types';
 import Recipe from '@/components/recipe';
 
